@@ -12,13 +12,16 @@ import com.fs.starfarer.api.campaign.CampaignClockAPI;
 import com.fs.starfarer.api.campaign.FleetDataAPI;
 import com.fs.starfarer.api.campaign.SectorEntityToken;
 import com.fs.starfarer.api.campaign.SpecialItemData;
+import com.fs.starfarer.api.campaign.CargoAPI.CargoItemQuantity;
 import com.fs.starfarer.api.campaign.econ.SubmarketAPI;
 
 import mod.ReverseEngineeringPlugin;
 
 public class ReverseEngineeringScript implements EveryFrameScript{
-    public boolean firstTick = true;
+    public boolean firstDay = true;
     public int lastDayChecked = 0;
+    public boolean firstHour = true;
+    public int lastHourChecked = 0;
     private static Logger logger = Global.getLogger(ReverseEngineeringPlugin.class);
 
     public boolean isDone() {return false;}
@@ -28,9 +31,9 @@ public class ReverseEngineeringScript implements EveryFrameScript{
     // Check a day passed or not
     private boolean newDay() {
         CampaignClockAPI clock = Global.getSector().getClock();
-        if (firstTick) {
+        if (firstDay) {
             lastDayChecked = clock.getDay();
-            firstTick = false;
+            firstDay = false;
             return false;
         } else if (clock.getDay() != lastDayChecked) {
             lastDayChecked = clock.getDay();
@@ -39,14 +42,44 @@ public class ReverseEngineeringScript implements EveryFrameScript{
         return false;
     }
 
+    private boolean newHour(){
+        CampaignClockAPI clock = Global.getSector().getClock();
+        if (firstHour) {
+            lastHourChecked = clock.getHour();
+            firstHour = false;
+            return false;
+        } else if (clock.getHour() != lastHourChecked) {
+            lastHourChecked = clock.getHour();
+            return true;
+        }
+        return false;
+    }
+
     public void advance(float var1){
-        if (newDay()) {
+        if (newHour()){
+            SectorEntityToken neturalPlatform = Global.getSector().getEntityById("corvus_abandoned_station");
+            SubmarketAPI reverseEngineeringMarket = neturalPlatform.getMarket().getSubmarket("reverse_engineering");
+            SubmarketAPI storage = neturalPlatform.getMarket().getSubmarket(Submarkets.SUBMARKET_STORAGE);
+
+            if(!reverseEngineeringMarket.getCargo().getWeapons().isEmpty()){
+                String weaponId = "";
+                for(CargoItemQuantity<String> weapon: reverseEngineeringMarket.getCargo().getWeapons()){
+                    weaponId = weapon.getItem();
+                    break;
+                }
+                reverseEngineeringMarket.getCargo().removeWeapons(weaponId, 1);
+                //add the blueprint to storage
+                SpecialItemData data = new SpecialItemData(Items.WEAPON_BP, weaponId);
+                storage.getCargo().addSpecial(data, 1);
+            }
+        }
+        if (newDay()){
             logger.log(Level.INFO, "NEW DAY");
             SectorEntityToken neturalPlatform = Global.getSector().getEntityById("corvus_abandoned_station");
             SubmarketAPI reverseEngineeringMarket = neturalPlatform.getMarket().getSubmarket("reverse_engineering");
             SubmarketAPI storage = neturalPlatform.getMarket().getSubmarket(Submarkets.SUBMARKET_STORAGE);
-            FleetDataAPI storedShips = reverseEngineeringMarket.getCargo().getMothballedShips();
 
+            FleetDataAPI storedShips = reverseEngineeringMarket.getCargo().getMothballedShips();
             if (!storedShips.getMembersListCopy().isEmpty()){
                 String blueprintId = "";
                 for(FleetMemberAPI ship: storedShips.getMembersListCopy()){
