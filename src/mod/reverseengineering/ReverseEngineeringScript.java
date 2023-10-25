@@ -42,6 +42,7 @@ public class ReverseEngineeringScript implements EveryFrameScript{
         return false;
     }
 
+    // Check a hour passed or not
     private boolean newHour(){
         CampaignClockAPI clock = Global.getSector().getClock();
         if (firstHour) {
@@ -56,6 +57,7 @@ public class ReverseEngineeringScript implements EveryFrameScript{
     }
 
     public void advance(float var1){
+        // Reverse engineering weapon each hour
         if (newHour()){
             SectorEntityToken neturalPlatform = Global.getSector().getEntityById("corvus_abandoned_station");
             SubmarketAPI reverseEngineeringMarket = neturalPlatform.getMarket().getSubmarket("reverse_engineering");
@@ -73,6 +75,7 @@ public class ReverseEngineeringScript implements EveryFrameScript{
                 storage.getCargo().addSpecial(data, 1);
             }
         }
+        // Reverse engineering ship each day
         if (newDay()){
             logger.log(Level.INFO, "NEW DAY");
             SectorEntityToken neturalPlatform = Global.getSector().getEntityById("corvus_abandoned_station");
