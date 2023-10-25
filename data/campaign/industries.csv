@@ -1,0 +1,2 @@
+id,name,cost mult,build time,income,upkeep,downgrade,upgrade,tags,data,image,plugin,desc,order,disruptDanger
+reverse_engineering,Reverse Engineering Hub,50,10,,7,,,"structure, unraidable",,graphics/icons/industry/heavy_industry.png,mod.reverseengineering.industries.ReverseEngineeringHub,"Ship and weapons in, bluepints out.",500,HIGH
