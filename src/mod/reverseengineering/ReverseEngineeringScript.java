@@ -1,8 +1,5 @@
 package mod.reverseengineering;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-
 import com.fs.starfarer.api.EveryFrameScript;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.impl.campaign.ids.Items;
@@ -15,14 +12,12 @@ import com.fs.starfarer.api.campaign.SpecialItemData;
 import com.fs.starfarer.api.campaign.CargoAPI.CargoItemQuantity;
 import com.fs.starfarer.api.campaign.econ.SubmarketAPI;
 
-import mod.ReverseEngineeringPlugin;
 
 public class ReverseEngineeringScript implements EveryFrameScript{
     public boolean firstDay = true;
     public int lastDayChecked = 0;
     public boolean firstHour = true;
     public int lastHourChecked = 0;
-    private static Logger logger = Global.getLogger(ReverseEngineeringPlugin.class);
 
     public boolean isDone() {return false;}
 
