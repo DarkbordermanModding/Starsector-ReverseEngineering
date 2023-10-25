@@ -1,0 +1,10 @@
+{
+	"id":"shipknowledge",
+	"name":"Ship knowledge",
+	"author":"Darkborderman",
+	"version":"0.0.0",
+	"description":"Tells you what mod something is from, and you learned it or not.",
+	"gameVersion":"0.96a-RC10",
+	"jars":["jars/shipknowledge.jar"],
+	"modPlugin":"mod.WhichModPlugin"
+}
