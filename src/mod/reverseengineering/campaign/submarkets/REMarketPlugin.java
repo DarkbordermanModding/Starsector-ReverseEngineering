@@ -17,48 +17,14 @@ public class REMarketPlugin extends BaseSubmarketPlugin {
         super.init(submarket);
     }
 
-
-
     @Override
     public float getTariff() {
-        switch (market.getFaction().getRelationshipLevel(Global.getSector().getFaction(Factions.PLAYER))) {
-            case COOPERATIVE:
-                return 0.25f;
-            case FRIENDLY:
-                return 0.5f;
-            case WELCOMING:
-                return 0.75f;
-            default:
-                return 1f;
-        }
-    }
-
-    @Override
-    public String getTooltipAppendix(CoreUIAPI ui) {
-        RepLevel level = market.getFaction().getRelationshipLevel(Global.getSector().getFaction(Factions.PLAYER));
-        if (market.getFaction() != Global.getSector().getFaction(Factions.INDEPENDENT)) {
-            return "Defunct due to hostile occupation";
-        }
-        if (!Global.getSector().getPlayerFleet().isTransponderOn()) {
-            return "Requires: Transponder on";
-        }
-        if (!level.isAtWorst(MIN_STANDING)) {
-            return "Requires: " + market.getFaction().getDisplayName() + " - "
-                    + MIN_STANDING.getDisplayName().toLowerCase();
-        }
-        return super.getTooltipAppendix(ui);
+        return 0f;
     }
 
     @Override
     public boolean isEnabled(CoreUIAPI ui) {
-        if (market.getFaction() != Global.getSector().getFaction(Factions.INDEPENDENT)) {
-            return false;
-        }
-        if (!Global.getSector().getPlayerFleet().isTransponderOn()) {
-            return false;
-        }
-        RepLevel level = market.getFaction().getRelationshipLevel(Global.getSector().getFaction(Factions.PLAYER));
-        return level.isAtWorst(MIN_STANDING);
+        return true;
     }
 
     @Override
