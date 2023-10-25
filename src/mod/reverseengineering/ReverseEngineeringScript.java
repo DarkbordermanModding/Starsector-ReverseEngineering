@@ -11,6 +11,7 @@ import com.fs.starfarer.api.campaign.SectorEntityToken;
 import com.fs.starfarer.api.campaign.SpecialItemData;
 import com.fs.starfarer.api.campaign.CargoAPI.CargoItemQuantity;
 import com.fs.starfarer.api.campaign.econ.SubmarketAPI;
+import com.fs.starfarer.api.combat.ShipHullSpecAPI;
 
 
 public class ReverseEngineeringScript implements EveryFrameScript{
@@ -35,6 +36,20 @@ public class ReverseEngineeringScript implements EveryFrameScript{
             return true;
         }
         return false;
+    }
+
+    private ShipHullSpecAPI getBaseShipHullSpec(ShipHullSpecAPI spec) {
+        ShipHullSpecAPI base = spec.getDParentHull();
+
+        if (!spec.isDefaultDHull() && !spec.isRestoreToBase()) {
+            base = spec;
+        }
+
+        if (spec.isRestoreToBase()) {
+            base = spec.getBaseHull();
+        }
+
+        return base;
     }
 
     // Check a hour passed or not
@@ -91,7 +106,7 @@ public class ReverseEngineeringScript implements EveryFrameScript{
             if (!storedShips.getMembersListCopy().isEmpty()){
                 String blueprintId = "";
                 for(FleetMemberAPI ship: storedShips.getMembersListCopy()){
-                    blueprintId = ship.getHullId();
+                    blueprintId = getBaseShipHullSpec(ship.getHullSpec()).getHullId();
                     storedShips.removeFleetMember(ship);
                     break;
                 }
