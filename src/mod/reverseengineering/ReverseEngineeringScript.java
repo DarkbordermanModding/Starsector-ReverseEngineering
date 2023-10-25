@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import com.fs.starfarer.api.EveryFrameScript;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.impl.campaign.ids.Items;
+import com.fs.starfarer.api.impl.campaign.ids.Submarkets;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.CampaignClockAPI;
 import com.fs.starfarer.api.campaign.FleetDataAPI;
@@ -43,6 +44,7 @@ public class ReverseEngineeringScript implements EveryFrameScript{
             logger.log(Level.INFO, "NEW DAY");
             SectorEntityToken neturalPlatform = Global.getSector().getEntityById("corvus_abandoned_station");
             SubmarketAPI reverseEngineeringMarket = neturalPlatform.getMarket().getSubmarket("reverse_engineering");
+            SubmarketAPI storage = neturalPlatform.getMarket().getSubmarket(Submarkets.SUBMARKET_STORAGE);
             FleetDataAPI storedShips = reverseEngineeringMarket.getCargo().getMothballedShips();
 
             if (!storedShips.getMembersListCopy().isEmpty()){
@@ -54,11 +56,8 @@ public class ReverseEngineeringScript implements EveryFrameScript{
                 }
                 //add the blueprint to storage
                 SpecialItemData data = new SpecialItemData(Items.SHIP_BP, blueprintId);
-                reverseEngineeringMarket.getCargo().addSpecial(data, 1);
+                storage.getCargo().addSpecial(data, 1);
             }
-            // Handle reverse engineering logic
-            //onNewDay();
-            //updateMarketTagTimePassed();
         }
     }
 }
