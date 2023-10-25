@@ -10,22 +10,23 @@ import com.fs.starfarer.api.impl.campaign.submarkets.BaseSubmarketPlugin;
 
 public class REMarketPlugin extends BaseSubmarketPlugin {
 
-    private final RepLevel MIN_STANDING = RepLevel.FAVORABLE;
+    @Override
+    public void init(SubmarketAPI submarket) {super.init(submarket);}
 
     @Override
-    public void init(SubmarketAPI submarket) {
-        super.init(submarket);
-    }
+    public float getTariff() {return 0f;}
 
     @Override
-    public float getTariff() {
-        return 0f;
-    }
+    public boolean isFreeTransfer() {return true;}
 
     @Override
-    public boolean isEnabled(CoreUIAPI ui) {
-        return true;
-    }
+    public String getBuyVerb() {return "Take";}
+
+    @Override
+    public String getSellVerb() {return "Leave";}
+
+    @Override
+    public boolean isEnabled(CoreUIAPI ui) {return true;}
 
     @Override
     public void updateCargoPrePlayerInteraction() {
