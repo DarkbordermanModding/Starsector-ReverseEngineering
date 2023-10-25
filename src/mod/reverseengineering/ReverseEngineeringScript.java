@@ -57,6 +57,8 @@ public class ReverseEngineeringScript implements EveryFrameScript{
     }
 
     public void advance(float var1){
+        // Will Reverse engineering 1 item sequentially
+        // Ship (daily) -> weapon (hourly) -> fighter (hourly)
         // Reverse engineering weapon each hour
         if (newHour()){
             SectorEntityToken neturalPlatform = Global.getSector().getEntityById("corvus_abandoned_station");
@@ -72,6 +74,17 @@ public class ReverseEngineeringScript implements EveryFrameScript{
                 reverseEngineeringMarket.getCargo().removeWeapons(weaponId, 1);
                 //add the blueprint to storage
                 SpecialItemData data = new SpecialItemData(Items.WEAPON_BP, weaponId);
+                storage.getCargo().addSpecial(data, 1);
+            }
+            if(!reverseEngineeringMarket.getCargo().getFighters().isEmpty()){
+                String fighterId = "";
+                for(CargoItemQuantity<String> fighter: reverseEngineeringMarket.getCargo().getFighters()){
+                    fighterId = fighter.getItem();
+                    break;
+                }
+                reverseEngineeringMarket.getCargo().removeFighters(fighterId, 1);
+                //add the blueprint to storage
+                SpecialItemData data = new SpecialItemData(Items.FIGHTER_BP, fighterId);
                 storage.getCargo().addSpecial(data, 1);
             }
         }
