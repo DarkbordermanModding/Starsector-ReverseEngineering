@@ -57,9 +57,7 @@ public class ReverseEngineeringScript implements EveryFrameScript{
     }
 
     public void advance(float var1){
-        // Will Reverse engineering 1 item sequentially
-        // Ship (daily) -> weapon (hourly) -> fighter (hourly)
-        // Reverse engineering weapon each hour
+        // Reverse engineering weapon/fighters each hour
         if (newHour()){
             SectorEntityToken neturalPlatform = Global.getSector().getEntityById("corvus_abandoned_station");
             SubmarketAPI reverseEngineeringMarket = neturalPlatform.getMarket().getSubmarket("reverse_engineering");
@@ -90,7 +88,6 @@ public class ReverseEngineeringScript implements EveryFrameScript{
         }
         // Reverse engineering ship each day
         if (newDay()){
-            logger.log(Level.INFO, "NEW DAY");
             SectorEntityToken neturalPlatform = Global.getSector().getEntityById("corvus_abandoned_station");
             SubmarketAPI reverseEngineeringMarket = neturalPlatform.getMarket().getSubmarket("reverse_engineering");
             SubmarketAPI storage = neturalPlatform.getMarket().getSubmarket(Submarkets.SUBMARKET_STORAGE);
