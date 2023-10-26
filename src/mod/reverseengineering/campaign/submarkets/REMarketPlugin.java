@@ -36,17 +36,12 @@ public class REMarketPlugin extends BaseSubmarketPlugin {
 
     @Override
     public boolean isIllegalOnSubmarket(CargoStackAPI stack, TransferAction action) {
-        if(action == TransferAction.PLAYER_SELL){
-            if(stack.getType() == CargoItemType.WEAPONS || stack.getType() == CargoItemType.FIGHTER_CHIP){
-                return false;
-            }
-        }
-        return action == TransferAction.PLAYER_SELL;
+        return false;
     }
 
     @Override
     public boolean isIllegalOnSubmarket(String commodityId, TransferAction action) {
-        return action == TransferAction.PLAYER_SELL;
+        return false;
     }
 
     @Override
