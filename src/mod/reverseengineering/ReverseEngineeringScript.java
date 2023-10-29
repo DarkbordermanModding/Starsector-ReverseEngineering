@@ -1,11 +1,16 @@
 package mod.reverseengineering;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import com.fs.starfarer.api.EveryFrameScript;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.impl.campaign.ids.Items;
 import com.fs.starfarer.api.impl.campaign.ids.Submarkets;
+
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.CampaignClockAPI;
+import com.fs.starfarer.api.campaign.CargoStackAPI;
 import com.fs.starfarer.api.campaign.FleetDataAPI;
 import com.fs.starfarer.api.campaign.SectorEntityToken;
 import com.fs.starfarer.api.campaign.SpecialItemData;
@@ -15,10 +20,13 @@ import com.fs.starfarer.api.combat.ShipHullSpecAPI;
 
 
 public class ReverseEngineeringScript implements EveryFrameScript{
-    public boolean firstDay = true;
-    public int lastDayChecked = 0;
     public boolean firstHour = true;
     public int lastHourChecked = 0;
+    public boolean firstDay = true;
+    public int lastDayChecked = 0;
+    public boolean firstMonth = true;
+    public int lastMonthChecked = 0;
+    private static Logger logger = Global.getLogger(ReverseEngineeringScript.class);
 
     public boolean isDone() {return false;}
 
@@ -94,6 +102,15 @@ public class ReverseEngineeringScript implements EveryFrameScript{
                 //add the blueprint to storage
                 SpecialItemData data = new SpecialItemData(Items.FIGHTER_BP, fighterId);
                 storage.getCargo().addSpecial(data, 1);
+            }
+            for(CargoStackAPI stack: reverseEngineeringMarket.getCargo().getStacksCopy()){
+                if(stack.getSpecialDataIfSpecial() != null){
+                    // int weaponCredit = 1000;
+                    logger.log(Level.INFO, stack.getSpecialDataIfSpecial().getData());
+                    logger.log(Level.INFO, stack.getSize());
+                    logger.log(Level.INFO, stack.getSpecialDataIfSpecial().getId());
+                    reverseEngineeringMarket.getCargo().removeStack(stack);
+                }
             }
         }
         // Reverse engineering ship each day
