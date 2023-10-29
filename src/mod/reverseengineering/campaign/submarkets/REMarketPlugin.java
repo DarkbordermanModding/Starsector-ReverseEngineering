@@ -1,7 +1,6 @@
 package mod.reverseengineering.campaign.submarkets;
 
 import com.fs.starfarer.api.campaign.*;
-import com.fs.starfarer.api.campaign.CargoAPI.CargoItemType;
 import com.fs.starfarer.api.campaign.econ.SubmarketAPI;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.impl.campaign.submarkets.BaseSubmarketPlugin;
@@ -47,10 +46,5 @@ public class REMarketPlugin extends BaseSubmarketPlugin {
     @Override
     public boolean isIllegalOnSubmarket(FleetMemberAPI member, TransferAction action) {
         return false;
-    }
-
-    @Override
-    public String getIllegalTransferText(CargoStackAPI stack, TransferAction action) {
-        return "Currently not implemented!";
     }
 }
