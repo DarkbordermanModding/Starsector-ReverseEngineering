@@ -135,16 +135,22 @@ public class ReverseEngineeringScript implements EveryFrameScript{
                 storage.getCargo().addSpecial(data, 1);
             }
         }
-        // Convert blueprint to credits each month
+        // Cleanup blueprint stack each month
         if(newMonth()){
             SectorEntityToken neturalPlatform = Global.getSector().getEntityById("corvus_abandoned_station");
             SubmarketAPI reverseEngineeringMarket = neturalPlatform.getMarket().getSubmarket("reverse_engineering");
             for(CargoStackAPI stack: reverseEngineeringMarket.getCargo().getStacksCopy()){
                 if(stack.getSpecialDataIfSpecial() != null){
-                    // TODO: Separate each blueprint (weapon, fighter, hull) price
-                    float blueprintCredit = 500f;
-                    Global.getSector().getPlayerFleet().getCargo().getCredits().add(blueprintCredit * stack.getSize());
-                    reverseEngineeringMarket.getCargo().removeStack(stack);
+                    String specialId = stack.getSpecialDataIfSpecial().getId();
+                    if(specialId.equals("fighter_bp") || specialId.equals("ship_bp") || specialId.equals("weapon_bp")){
+                        // TODO: Separate each blueprint (weapon, fighter, hull) price
+                        float blueprintCredit = 500f;
+                        logger.log(Level.INFO, stack.getSpecialDataIfSpecial().getData());
+                        logger.log(Level.INFO, stack.getSize());
+                        logger.log(Level.INFO, stack.getSpecialDataIfSpecial().getId());
+                        Global.getSector().getPlayerFleet().getCargo().getCredits().add(blueprintCredit * stack.getSize());
+                        reverseEngineeringMarket.getCargo().removeStack(stack);
+                    }
                 }
             }
         }
