@@ -32,6 +32,32 @@ public class ReverseEngineeringScript implements EveryFrameScript{
 
     public boolean runWhilePaused() {return false;}
 
+    // Remove Dmods and others, get base blueprint hull
+    private ShipHullSpecAPI getBaseShipHullSpec(ShipHullSpecAPI spec) {
+        ShipHullSpecAPI base = spec.getDParentHull();
+        if (!spec.isDefaultDHull() && !spec.isRestoreToBase()) {
+            base = spec;
+        }
+        if (spec.isRestoreToBase()) {
+            base = spec.getBaseHull();
+        }
+        return base;
+    }
+
+    // Check a hour passed or not
+    private boolean newHour(){
+        CampaignClockAPI clock = Global.getSector().getClock();
+        if (firstHour) {
+            lastHourChecked = clock.getHour();
+            firstHour = false;
+            return false;
+        } else if (clock.getHour() != lastHourChecked) {
+            lastHourChecked = clock.getHour();
+            return true;
+        }
+        return false;
+    }
+
     // Check a day passed or not
     private boolean newDay() {
         CampaignClockAPI clock = Global.getSector().getClock();
@@ -46,29 +72,15 @@ public class ReverseEngineeringScript implements EveryFrameScript{
         return false;
     }
 
-    private ShipHullSpecAPI getBaseShipHullSpec(ShipHullSpecAPI spec) {
-        ShipHullSpecAPI base = spec.getDParentHull();
-
-        if (!spec.isDefaultDHull() && !spec.isRestoreToBase()) {
-            base = spec;
-        }
-
-        if (spec.isRestoreToBase()) {
-            base = spec.getBaseHull();
-        }
-
-        return base;
-    }
-
-    // Check a hour passed or not
-    private boolean newHour(){
+    // Check a month passed or not
+    private boolean newMonth() {
         CampaignClockAPI clock = Global.getSector().getClock();
-        if (firstHour) {
-            lastHourChecked = clock.getHour();
-            firstHour = false;
+        if (firstMonth) {
+            lastMonthChecked = clock.getMonth();
+            firstMonth = false;
             return false;
-        } else if (clock.getHour() != lastHourChecked) {
-            lastHourChecked = clock.getHour();
+        } else if (clock.getMonth() != lastMonthChecked) {
+            lastMonthChecked = clock.getMonth();
             return true;
         }
         return false;
@@ -131,6 +143,10 @@ public class ReverseEngineeringScript implements EveryFrameScript{
                 SpecialItemData data = new SpecialItemData(Items.SHIP_BP, blueprintId);
                 storage.getCargo().addSpecial(data, 1);
             }
+        }
+        // Cleanup blueprint stack each month
+        if(newMonth()){
+            
         }
     }
 }
