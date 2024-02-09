@@ -1,3 +1,3 @@
 # Starsector-ReverseEngineering
 
-Configure and create more stable locations in Starsector.
+Reverse engineering owned ships, weapons, and fighters easily in Starsector.
