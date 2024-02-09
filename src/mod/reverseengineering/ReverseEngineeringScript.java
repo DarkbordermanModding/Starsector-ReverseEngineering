@@ -103,12 +103,6 @@ public class ReverseEngineeringScript implements EveryFrameScript{
                 SpecialItemData data = new SpecialItemData(Items.FIGHTER_BP, fighterId);
                 storage.getCargo().addSpecial(data, fighterCount);
             }
-        }
-        if (newHour()){
-            SectorEntityToken neturalPlatform = Global.getSector().getEntityById("corvus_abandoned_station");
-            SubmarketAPI reverseEngineeringMarket = neturalPlatform.getMarket().getSubmarket("reverse_engineering");
-            SubmarketAPI storage = neturalPlatform.getMarket().getSubmarket(Submarkets.SUBMARKET_STORAGE);
-
             FleetDataAPI storedShips = reverseEngineeringMarket.getCargo().getMothballedShips();
             if (!storedShips.getMembersListCopy().isEmpty()){
                 String blueprintId = "";
