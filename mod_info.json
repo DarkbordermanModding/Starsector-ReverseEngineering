@@ -3,7 +3,7 @@
 	"name":"Reverse Engineering",
 	"author":"Darkborderman",
 	"version":"0.0.0",
-	"description":"Tells you what mod something is from, and you learned it or not.",
+	"description":"Reverse engineering owned ships, weapons, and fighters easily.",
 	"gameVersion":"0.96a-RC10",
 	"jars":["jars/reverseengineering.jar"],
 	"modPlugin":"mod.ReverseEngineeringPlugin"
