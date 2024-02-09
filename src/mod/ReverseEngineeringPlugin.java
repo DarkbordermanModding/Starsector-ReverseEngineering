@@ -12,9 +12,8 @@ public class ReverseEngineeringPlugin extends BaseModPlugin
     private static Logger logger = Global.getLogger(ReverseEngineeringPlugin.class);
 
     public void onGameLoad(boolean newGame) {
-        logger.log(Level.INFO, "---Terraforming Platform, best platform");
+        logger.log(Level.INFO, "---Terraforming Platform, best platform---");
         SectorEntityToken neturalPlatform = Global.getSector().getEntityById("corvus_abandoned_station");
-        logger.log(Level.INFO, neturalPlatform);
         if(newGame){
             neturalPlatform.getMarket().addSubmarket("reverse_engineering");
         }

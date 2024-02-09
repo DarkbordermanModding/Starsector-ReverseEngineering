@@ -58,20 +58,6 @@ public class ReverseEngineeringScript implements EveryFrameScript{
         return false;
     }
 
-    // Check a day passed or not
-    private boolean newDay() {
-        CampaignClockAPI clock = Global.getSector().getClock();
-        if (firstDay) {
-            lastDayChecked = clock.getDay();
-            firstDay = false;
-            return false;
-        } else if (clock.getDay() != lastDayChecked) {
-            lastDayChecked = clock.getDay();
-            return true;
-        }
-        return false;
-    }
-
     // Check a month passed or not
     private boolean newMonth() {
         CampaignClockAPI clock = Global.getSector().getClock();
@@ -87,7 +73,7 @@ public class ReverseEngineeringScript implements EveryFrameScript{
     }
 
     public void advance(float var1){
-        // Reverse engineering weapon/fighters each hour
+        // Reverse engineering weapon/fighters/ships each hour
         if (newHour()){
             SectorEntityToken neturalPlatform = Global.getSector().getEntityById("corvus_abandoned_station");
             SubmarketAPI reverseEngineeringMarket = neturalPlatform.getMarket().getSubmarket("reverse_engineering");
@@ -95,29 +81,30 @@ public class ReverseEngineeringScript implements EveryFrameScript{
 
             if(!reverseEngineeringMarket.getCargo().getWeapons().isEmpty()){
                 String weaponId = "";
+                int weaponCount = 0;
                 for(CargoItemQuantity<String> weapon: reverseEngineeringMarket.getCargo().getWeapons()){
                     weaponId = weapon.getItem();
+                    weaponCount = weapon.getCount();
                     break;
                 }
-                reverseEngineeringMarket.getCargo().removeWeapons(weaponId, 1);
-                //add the blueprint to storage
+                reverseEngineeringMarket.getCargo().removeWeapons(weaponId, weaponCount);
                 SpecialItemData data = new SpecialItemData(Items.WEAPON_BP, weaponId);
-                storage.getCargo().addSpecial(data, 1);
+                storage.getCargo().addSpecial(data, weaponCount);
             }
             if(!reverseEngineeringMarket.getCargo().getFighters().isEmpty()){
                 String fighterId = "";
+                int fighterCount = 0;
                 for(CargoItemQuantity<String> fighter: reverseEngineeringMarket.getCargo().getFighters()){
                     fighterId = fighter.getItem();
+                    fighterCount = fighter.getCount();
                     break;
                 }
-                reverseEngineeringMarket.getCargo().removeFighters(fighterId, 1);
-                //add the blueprint to storage
+                reverseEngineeringMarket.getCargo().removeFighters(fighterId, fighterCount);
                 SpecialItemData data = new SpecialItemData(Items.FIGHTER_BP, fighterId);
-                storage.getCargo().addSpecial(data, 1);
+                storage.getCargo().addSpecial(data, fighterCount);
             }
         }
-        // Reverse engineering ship each day
-        if (newDay()){
+        if (newHour()){
             SectorEntityToken neturalPlatform = Global.getSector().getEntityById("corvus_abandoned_station");
             SubmarketAPI reverseEngineeringMarket = neturalPlatform.getMarket().getSubmarket("reverse_engineering");
             SubmarketAPI storage = neturalPlatform.getMarket().getSubmarket(Submarkets.SUBMARKET_STORAGE);
