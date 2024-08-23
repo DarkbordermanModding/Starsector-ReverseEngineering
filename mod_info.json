@@ -1,0 +1,10 @@
+{
+	"id":"darkborderman.reverseengineering",
+	"name":"Reverse Engineering",
+	"author":"Darkborderman",
+	"version":"0.0.0",
+	"description":"Reverse engineering owned ships, weapons, and fighters easily.",
+	"gameVersion":"0.97a-RC11",
+	"jars":["jars/reverseengineering.jar"],
+	"modPlugin":"mod.ReverseEngineeringPlugin"
+}
